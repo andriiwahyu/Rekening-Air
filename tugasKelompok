@@ -3,16 +3,16 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define ADM_RT 10000.00 //Biaya administrasi untuk kelompok rumah tangga
-#define ADM_U 12500.00 //Biaya administrasi untuk kelompok usaha
-#define BPM_RT 5000.00 //Biaya pemeliharaan meteran untuk kelompok rumah tangga
-#define BPM_U 7500.00 //Biaya pemeliharaan meteran untuk usaha
-#define JATUH_TEMPO 25 //Jatuh tempo tanggal 25 setiap bulannya
-#define DENDA 25000.00 //Diberikan denda sebesar Rp 25.000 jika lewat jatuh tempo
+#define ADM_RT 10000.00 // Biaya administrasi untuk kelompok rumah tangga
+#define ADM_U 12500.00  // Biaya administrasi untuk kelompok usaha
+#define BPM_RT 5000.00  // Biaya pemeliharaan meteran untuk kelompok rumah tangga
+#define BPM_U 7500.00   // Biaya pemeliharaan meteran untuk usaha
+#define JATUH_TEMPO 25  // Jatuh tempo tanggal 25 setiap bulannya
+#define DENDA 25000.00  // Diberikan denda sebesar Rp 25.000 jika lewat jatuh tempo
 #define BOLD "\e[1m"
 #define BOLD_END "\e[m"
 
-//deklarasi prosedur dan fungsi
+// deklarasi prosedur dan fungsi
 float cekInput();
 void intro(),
     menuKelompok(),
@@ -20,27 +20,28 @@ void intro(),
     menuUsaha(),
     menuListrik(),
 
-     d1(),  d2(),  d3(),  d4(), d5(),
+    d1(), d2(), d3(), d4(), d5(),
     d11(), d21(), d31(), d41(), d51(),
     d12(), d22(), d32(), d42(), d52(),
     d13(), d23(), d33(), d43(), d53(),
     d14(), d24(), d34(), d44(), d54(),
 
-     e1(),  e2(),  e3(), 
+    e1(), e2(), e3(),
     e11(), e21(), e31(),
     e12(), e22(), e32(),
     e13(), e23(), e33(),
     e14(), e24(), e34(),
 
     registrasi(char *nama, float *selisihPemakaian, float *biayaPemakaian, float biayaKurang10, float biayaLebih10, float biayaLebih20),
-    rekapitulasi(char nama[], char kelompok[], char golongan[], float selisihPemakaian, float biayaPemakaian, float bpm , float adm),
+    rekapitulasi(char nama[], char kelompok[], char golongan[], float selisihPemakaian, float biayaPemakaian, float bpm, float adm),
     pesanError();
-    void ulangProgram();
-    void cetakNota();
-    void cetak();
+void ulangProgram();
+void cetakNota(char nama[], char kelompok[], char golongan[], float selisihPemakaian, float biayaPemakaian, float bpm, float adm);
+void cetak(char nama[], char kelompok[], char golongan[], float selisihPemakaian, float biayaPemakaian, float bpm, float adm);
 
-//pesan error
-void pesanError() {
+// pesan error
+void pesanError()
+{
     system("cls");
     printf("|| ================================================== ||\n");
     printf("||           Ada yang salah. Mohon ulangi!            ||\n");
@@ -64,9 +65,9 @@ void menuListrik()
     printf("|| Mohon masukkan kode angka pada [] : ");
 }
 
-//registrasi
+// registrasi
 void registrasi(char *nama, float *selisihPemakaian, float *biayaPemakaian, float biayaKurang10, float biayaLebih10, float biayaLebih20)
-{   
+{
     system("cls");
     int x = 0;
     while (x == 0)
@@ -88,9 +89,12 @@ void registrasi(char *nama, float *selisihPemakaian, float *biayaPemakaian, floa
         system("cls");
 
         *selisihPemakaian = pemakaianBulanIni - pemakaianBulanLalu;
-        if ((*selisihPemakaian) > 0 && (*selisihPemakaian) <= 10) *biayaPemakaian = biayaKurang10 * 10;
-        else if ((*selisihPemakaian) > 10 && (*selisihPemakaian) <= 20) *biayaPemakaian = biayaLebih10 * (*selisihPemakaian);
-        else if ((*selisihPemakaian) > 20) *biayaPemakaian = biayaLebih20 * (*selisihPemakaian);
+        if ((*selisihPemakaian) > 0 && (*selisihPemakaian) <= 10)
+            *biayaPemakaian = biayaKurang10 * 10;
+        else if ((*selisihPemakaian) > 10 && (*selisihPemakaian) <= 20)
+            *biayaPemakaian = biayaLebih10 * (*selisihPemakaian);
+        else if ((*selisihPemakaian) > 20)
+            *biayaPemakaian = biayaLebih20 * (*selisihPemakaian);
         else
         {
             pesanError();
@@ -99,8 +103,9 @@ void registrasi(char *nama, float *selisihPemakaian, float *biayaPemakaian, floa
     }
 }
 
-//validasi input
-float cekInput() {
+// validasi input
+float cekInput()
+{
     char input[100];
     int a = 0,
         negatif = 0,
@@ -110,65 +115,87 @@ float cekInput() {
         depan = 0,
         salah = 0;
     float nolKoma = 1,
-        nilaiInput;
+          nilaiInput;
 
     scanf("%[^\n]", input);
     getchar();
 
-    if(input[a] == '\0') {
-        salah=1;
+    if (input[a] == '\0')
+    {
+        salah = 1;
     }
-    while (input[a] != '\0') {
-        if (input[a] == '-') {
+    while (input[a] != '\0')
+    {
+        if (input[a] == '-')
+        {
             negatif++;
-            if (a > 0 || negatif == 2) {
+            if (a > 0 || negatif == 2)
+            {
                 salah = 1;
                 input[a] = '\0';
             }
-            if (!(input[a+1] >= '0' && input[a+1] <= '9')) {
+            if (!(input[a + 1] >= '0' && input[a + 1] <= '9'))
+            {
                 salah = 1;
                 input[a] = '\0';
             }
             a++;
-        } else if(input[a] == '.'){
+        }
+        else if (input[a] == '.')
+        {
             koma++;
-            if (input[0] == '.' || input[a+1] == '\0' || koma > 1) {
+            if (input[0] == '.' || input[a + 1] == '\0' || koma > 1)
+            {
                 salah = 1;
-                input[a]='\0';
+                input[a] = '\0';
             }
             a++;
-        } else if (input[a] >= '0' && input[a] <= '9'){
-            if (koma == 1){
+        }
+        else if (input[a] >= '0' && input[a] <= '9')
+        {
+            if (koma == 1)
+            {
                 belakang = (belakang * 10) + (input[a] - 48);
                 deret++;
                 a++;
-            } else {
+            }
+            else
+            {
                 depan = (depan * 10) + (input[a] - 48);
                 a++;
             }
-        } else {
+        }
+        else
+        {
             salah = 1;
             input[a] = '\0';
         }
     }
-    if (koma == 1) {
-        for(int i = 0; i < deret; i++){
+    if (koma == 1)
+    {
+        for (int i = 0; i < deret; i++)
+        {
             nolKoma = nolKoma / 10;
         }
         nilaiInput = belakang * nolKoma + depan;
-    } else {
+    }
+    else
+    {
         nilaiInput = depan;
     }
-    if (negatif == 1) {
+    if (negatif == 1)
+    {
         nilaiInput = nilaiInput - (nilaiInput * 2);
     }
-    if (salah == 1) {
+    if (salah == 1)
+    {
         printf("|| ================================================== ||\n");
         printf("||           Ada yang salah. Mohon ulangi!            ||\n");
         printf("|| ================================================== ||\n");
-        printf("|| ");
         return cekInput();
-    } else {
+    }
+    else
+    {
         return nilaiInput;
     }
 }
@@ -190,19 +217,20 @@ void ulangProgram()
     printf("|| ================================================== ||\n");
     printf("|| Pilihan Anda : ");
     pilihan = cekInput();
-    switch (pilihan) {
+    switch (pilihan)
+    {
     case 1:
         system("cls");
         intro();
     case 2:
         system("cls");
         break;
-    default :
+    default:
         pesanError();
         ulangProgram();
     }
 }
-void cetakNota()
+void cetakNota(char nama[], char kelompok[], char golongan[], float selisihPemakaian, float biayaPemakaian, float bpm, float adm)
 {
     system("cls");
     int pilihan, menu;
@@ -216,69 +244,76 @@ void cetakNota()
     printf("|| ================================================== ||\n");
     printf("|| Pilihan Anda : ");
     pilihan = cekInput();
-    switch (pilihan) {
+    switch (pilihan)
+    {
     case 1:
         system("cls");
-        cetak();
+        cetak(nama, kelompok, golongan, selisihPemakaian, biayaPemakaian, bpm, adm);
     case 2:
         system("cls");
         break;
-    default :
+    default:
         pesanError();
         ulangProgram();
     }
 }
-void cetak()
+void cetak(char nama[], char kelompok[], char golongan[], float selisihPemakaian, float biayaPemakaian, float bpm, float adm)
 {
-    char nama[100]; char kelompok[100]; char golongan[100]; float selisihPemakaian, biayaPemakaian,bpm ,adm, denda;
     time_t t;
     t = time(NULL);
     struct tm tm = *localtime(&t);
+    float denda;
     int sisaWaktu = tm.tm_mday - JATUH_TEMPO;
-    if (sisaWaktu <= 0) denda = 0;
-    else denda = DENDA;
+    if (sisaWaktu <= 0)
+        denda = 0;
+    else
+        denda = DENDA;
 
     float biayaPerM3;
-    if (selisihPemakaian > 0 && selisihPemakaian <= 10) biayaPerM3 = biayaPemakaian / 10;
-    else biayaPerM3 = biayaPemakaian / selisihPemakaian; 
-    FILE* fptr;
+    if (selisihPemakaian > 0 && selisihPemakaian <= 10)
+        biayaPerM3 = biayaPemakaian / 10;
+    else
+        biayaPerM3 = biayaPemakaian / selisihPemakaian;
+    FILE *fptr;
 
     fptr = fopen("print-rekening-air.txt", "w");
-    fprintf(fptr,"\n\n|| ================================================== ||\n");
-    fprintf(fptr,"||       " BOLD "CV. SAUBERES WASSER" BOLD_END "      ||\n");
-    fprintf(fptr,"|| ================================================== ||\n");
-    fprintf(fptr,"||                    Rekapitulasi                    ||\n");
-    fprintf(fptr,"|| ================================================== ||\n");
-    fprintf(fptr,"|| Nama              : %s\n", nama);
-    fprintf(fptr,"|| Kelompok          : %s\n", kelompok);
-    fprintf(fptr,"|| Golongan          : %s\n", golongan);
-    fprintf(fptr,"|| Tanggal           : %d-%d-%d\n", tm.tm_mday, tm.tm_mon+1, tm.tm_year+1900);
-    fprintf(fptr,"|| Jatuh Tempo       : %d-%d-%d\n", JATUH_TEMPO, tm.tm_mon+1, tm.tm_year+1900);
-    fprintf(fptr,"|| ================================================== ||\n");
-    fprintf(fptr,"|| Pemakaian bln ini : %.2f m3\n", selisihPemakaian);
-    fprintf(fptr,"|| Biaya per m3      : %.2f m3\n", biayaPerM3);
-    fprintf(fptr,"|| ================================================== ||\n");
-    fprintf(fptr,"|| Sub total         : Rp %.2f\n", biayaPemakaian);
-    fprintf(fptr,"|| ================================================== ||\n");
-    fprintf(fptr,"|| BPM               : Rp %.2f\n", bpm);
-    fprintf(fptr,"|| Denda             : Rp %.2f\n", denda);
-    fprintf(fptr,"|| Admintrasi        : Rp %.2f\n", adm);
-    fprintf(fptr,"|| ================================================== ||\n");
-    fprintf(fptr,"|| Total             : Rp %.2f\n", (biayaPemakaian + bpm + denda + adm));
-    fprintf(fptr,"|| ================================================== ||\n");
+    fprintf(fptr, "\n\n|| ================================================== ||\n");
+    fprintf(fptr, "||       " BOLD "CV. SAUBERES WASSER" BOLD_END "      ||\n");
+    fprintf(fptr, "|| ================================================== ||\n");
+    fprintf(fptr, "||                    Rekapitulasi                    ||\n");
+    fprintf(fptr, "|| ================================================== ||\n");
+    fprintf(fptr, "|| Nama              : %s\n", nama);
+    fprintf(fptr, "|| Kelompok          : %s\n", kelompok);
+    fprintf(fptr, "|| Golongan          : %s\n", golongan);
+    fprintf(fptr, "|| Tanggal           : %d-%d-%d\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+    fprintf(fptr, "|| Jatuh Tempo       : %d-%d-%d\n", JATUH_TEMPO, tm.tm_mon + 1, tm.tm_year + 1900);
+    fprintf(fptr, "|| ================================================== ||\n");
+    fprintf(fptr, "|| Pemakaian bln ini : %.2f m3\n", selisihPemakaian);
+    fprintf(fptr, "|| Biaya per m3      : %.2f m3\n", biayaPerM3);
+    fprintf(fptr, "|| ================================================== ||\n");
+    fprintf(fptr, "|| Sub total         : Rp %.2f\n", biayaPemakaian);
+    fprintf(fptr, "|| ================================================== ||\n");
+    fprintf(fptr, "|| BPM               : Rp %.2f\n", bpm);
+    fprintf(fptr, "|| Denda             : Rp %.2f\n", denda);
+    fprintf(fptr, "|| Admintrasi        : Rp %.2f\n", adm);
+    fprintf(fptr, "|| ================================================== ||\n");
+    fprintf(fptr, "|| Total             : Rp %.2f\n", (biayaPemakaian + bpm + denda + adm));
+    fprintf(fptr, "|| ================================================== ||\n");
 
-
-    fprintf(fptr,"\n\n|| ================================================== ||\n");
-    fprintf(fptr,"||      " BOLD "PERINGATAN DARI SARA!!" BOLD_END "    ||\n");
-    fprintf(fptr,"|| ================================================== ||\n");
-    if (sisaWaktu <= 0) fprintf(fptr,"|| Halo %s, jatuh tempo pada %d hari lagi.\n", nama, -1 * sisaWaktu);
-    else fprintf(fptr,"|| Halo %s, jatuh tempo telah lewat %d hari.\n", nama, sisaWaktu);
-    fprintf(fptr,"|| ================================================== ||\n");
+    fprintf(fptr, "\n\n|| ================================================== ||\n");
+    fprintf(fptr, "||      " BOLD "PERINGATAN DARI SARA!!" BOLD_END "    ||\n");
+    fprintf(fptr, "|| ================================================== ||\n");
+    if (sisaWaktu <= 0)
+        fprintf(fptr, "|| Halo %s, jatuh tempo pada %d hari lagi.\n", nama, -1 * sisaWaktu);
+    else
+        fprintf(fptr, "|| Halo %s, jatuh tempo telah lewat %d hari.\n", nama, sisaWaktu);
+    fprintf(fptr, "|| ================================================== ||\n");
 
     fclose(fptr);
 }
-//rekapitulasi
-void rekapitulasi(char nama[], char kelompok[], char golongan[], float selisihPemakaian, float biayaPemakaian, float bpm , float adm) {
+// rekapitulasi
+void rekapitulasi(char nama[], char kelompok[], char golongan[], float selisihPemakaian, float biayaPemakaian, float bpm, float adm)
+{
     system("cls");
     time_t t;
     t = time(NULL);
@@ -286,12 +321,16 @@ void rekapitulasi(char nama[], char kelompok[], char golongan[], float selisihPe
     float denda;
     int sisaWaktu = tm.tm_mday - JATUH_TEMPO;
 
-    if (sisaWaktu <= 0) denda = 0;
-    else denda = DENDA;
+    if (sisaWaktu <= 0)
+        denda = 0;
+    else
+        denda = DENDA;
 
     float biayaPerM3;
-    if (selisihPemakaian > 0 && selisihPemakaian <= 10) biayaPerM3 = biayaPemakaian / 10;
-    else biayaPerM3 = biayaPemakaian / selisihPemakaian;
+    if (selisihPemakaian > 0 && selisihPemakaian <= 10)
+        biayaPerM3 = biayaPemakaian / 10;
+    else
+        biayaPerM3 = biayaPemakaian / selisihPemakaian;
 
     printf("\n\n|| ================================================== ||\n");
     printf("||       " BOLD "CV. SAUBERES WASSER" BOLD_END "      ||\n");
@@ -301,8 +340,8 @@ void rekapitulasi(char nama[], char kelompok[], char golongan[], float selisihPe
     printf("|| Nama              : %s\n", nama);
     printf("|| Kelompok          : %s\n", kelompok);
     printf("|| Golongan          : %s\n", golongan);
-    printf("|| Tanggal           : %d-%d-%d\n", tm.tm_mday, tm.tm_mon+1, tm.tm_year+1900);
-    printf("|| Jatuh Tempo       : %d-%d-%d\n", JATUH_TEMPO, tm.tm_mon+1, tm.tm_year+1900);
+    printf("|| Tanggal           : %d-%d-%d\n", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+    printf("|| Jatuh Tempo       : %d-%d-%d\n", JATUH_TEMPO, tm.tm_mon + 1, tm.tm_year + 1900);
     printf("|| ================================================== ||\n");
     printf("|| Pemakaian bln ini : %.2f m3\n", selisihPemakaian);
     printf("|| Biaya per m3      : %.2f m3\n", biayaPerM3);
@@ -316,20 +355,21 @@ void rekapitulasi(char nama[], char kelompok[], char golongan[], float selisihPe
     printf("|| Total             : Rp %.2f\n", (biayaPemakaian + bpm + denda + adm));
     printf("|| ================================================== ||\n");
 
-
     printf("\n\n|| ================================================== ||\n");
     printf("||     " BOLD "PERINGATAN DARI SARA!!" BOLD_END "     |\n");
     printf("|| ================================================== ||\n");
-    if (sisaWaktu <= 0) printf("|| Halo %s, jatuh tempo pada %d hari lagi.\n", nama, -1 * sisaWaktu);
-    else printf("|| Halo %s, jatuh tempo telah lewat %d hari.\n", nama, sisaWaktu);
+    if (sisaWaktu <= 0)
+        printf("|| Halo %s, jatuh tempo pada %d hari lagi.\n", nama, -1 * sisaWaktu);
+    else
+        printf("|| Halo %s, jatuh tempo telah lewat %d hari.\n", nama, sisaWaktu);
     printf("|| ================================================== ||\n");
     getchar();
-    
-    cetakNota();
+
+    cetakNota(nama, kelompok, golongan, selisihPemakaian, biayaPemakaian, bpm, adm);
     ulangProgram();
 }
 
-//intro
+// intro
 void intro()
 {
     printf("\n\n|| ================================================== ||\n");
@@ -351,9 +391,9 @@ void intro()
     menuKelompok();
 }
 
-//input pilihan kelompok
+// input pilihan kelompok
 
-void menuKelompok() //menu usaha
+void menuKelompok() // menu usaha
 {
     system("cls");
     printf("|| ================================================== ||\n");
@@ -367,19 +407,19 @@ void menuKelompok() //menu usaha
     printf("|| ================================================== ||\n");
     printf("|| Mohon masukkan kode angka pada [] : ");
     int kode = cekInput();
-    
+
     switch (kode)
     {
-        case 1:
-            menuRumahTangga();
-            break;
-        case 2:
-            menuUsaha();
-            break;
-        default:
-            pesanError();
-            menuKelompok();
-            break;
+    case 1:
+        menuRumahTangga();
+        break;
+    case 2:
+        menuUsaha();
+        break;
+    default:
+        pesanError();
+        menuKelompok();
+        break;
     }
 }
 
@@ -401,28 +441,28 @@ void menuRumahTangga()
     printf("|| ================================================== ||\n");
     printf("|| Mohon masukkan kode angka pada [] : ");
     int kode = cekInput();
-    
+
     switch (kode)
     {
-        case 1:
-            d1();
-            break;
-        case 2:
-            d2();
-            break;
-        case 3:
-            d3();
-            break;
-        case 4:
-            d4();
-            break;
-        case 5:
-            d5();
-            break;
-        default:
-            pesanError();
-            menuRumahTangga();
-            break;
+    case 1:
+        d1();
+        break;
+    case 2:
+        d2();
+        break;
+    case 3:
+        d3();
+        break;
+    case 4:
+        d4();
+        break;
+    case 5:
+        d5();
+        break;
+    default:
+        pesanError();
+        menuRumahTangga();
+        break;
     }
 }
 
@@ -441,150 +481,150 @@ void menuUsaha()
     printf("|| ================================================== ||\n");
     printf("|| Mohon masukkan kode angka pada [] : ");
     int kode = cekInput();
-    
+
     switch (kode)
     {
-        case 1:
-            e1();
-            break;
-        case 2:
-            e2();
-            break;
-        case 3:
-            e3();
-            break;
-        default:
-            system("cls");
-            printf("|| ================================================== ||\n");
-            printf("||           Ada yang salah. Mohon ulangi!            ||\n");
-            printf("|| ================================================== ||\n");
-            menuUsaha();
-            break;
+    case 1:
+        e1();
+        break;
+    case 2:
+        e2();
+        break;
+    case 3:
+        e3();
+        break;
+    default:
+        system("cls");
+        printf("|| ================================================== ||\n");
+        printf("||           Ada yang salah. Mohon ulangi!            ||\n");
+        printf("|| ================================================== ||\n");
+        menuUsaha();
+        break;
     }
 }
 
-void d1() 
+void d1()
 {
     menuListrik();
     int kode = cekInput();
     switch (kode)
     {
-        case 1:
-            d11();
-            break;
-        case 2:
-            d12();
-            break;
-        case 3:
-            d13();
-            break;
-        case 4:
-            d14();
-            break;
-        default:
-            pesanError();
-            d1();
-            break;
+    case 1:
+        d11();
+        break;
+    case 2:
+        d12();
+        break;
+    case 3:
+        d13();
+        break;
+    case 4:
+        d14();
+        break;
+    default:
+        pesanError();
+        d1();
+        break;
     }
 }
 
-void d2() 
+void d2()
 {
     menuListrik();
     int kode = cekInput();
     switch (kode)
     {
-        case 1:
-            d21();
-            break;
-        case 2:
-            d22();
-            break;
-        case 3:
-            d23();
-            break;
-        case 4:
-            d24();
-            break;
-        default:
-            pesanError();
-            d2();
-            break;
+    case 1:
+        d21();
+        break;
+    case 2:
+        d22();
+        break;
+    case 3:
+        d23();
+        break;
+    case 4:
+        d24();
+        break;
+    default:
+        pesanError();
+        d2();
+        break;
     }
 }
 
-void d3() 
+void d3()
 {
     menuListrik();
     int kode = cekInput();
     switch (kode)
     {
-        case 1:
-            d31();
-            break;
-        case 2:
-            d32();
-            break;
-        case 3:
-            d33();
-            break;
-        case 4:
-            d34();
-            break;
-        default:
-            pesanError();
-            d3();
-            break;
+    case 1:
+        d31();
+        break;
+    case 2:
+        d32();
+        break;
+    case 3:
+        d33();
+        break;
+    case 4:
+        d34();
+        break;
+    default:
+        pesanError();
+        d3();
+        break;
     }
 }
 
-void d4() 
+void d4()
 {
     menuListrik();
     int kode = cekInput();
     switch (kode)
     {
-        case 1:
-            d41();
-            break;
-        case 2:
-            d42();
-            break;
-        case 3:
-            d43();
-            break;
-        case 4:
-            d44();
-            break;
-        default:
-            pesanError();
-            d4();
-            break;
+    case 1:
+        d41();
+        break;
+    case 2:
+        d42();
+        break;
+    case 3:
+        d43();
+        break;
+    case 4:
+        d44();
+        break;
+    default:
+        pesanError();
+        d4();
+        break;
     }
 }
 
-void d5() 
+void d5()
 {
     menuListrik();
     int kode = cekInput();
     switch (kode)
     {
-        case 1:
-            d51();
-            break;
-        case 2:
-            d52();
-            break;
-        case 3:
-            d53();
-            break;
-        case 4:
-            d54();
-            break;
-        default:
-            pesanError();
-            d5();
-            break;
+    case 1:
+        d51();
+        break;
+    case 2:
+        d52();
+        break;
+    case 3:
+        d53();
+        break;
+    case 4:
+        d54();
+        break;
+    default:
+        pesanError();
+        d5();
+        break;
     }
 }
 
@@ -605,7 +645,6 @@ void d12()
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 2060, 2340, 5940);
 
-
     rekapitulasi(nama, "Rumah Tangga", "D1 - 2", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
 
@@ -616,8 +655,7 @@ void d13()
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 6340, 9200, 9600);
 
-
-   rekapitulasi(nama, "Rumah Tangga", "D1 - 3", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
+    rekapitulasi(nama, "Rumah Tangga", "D1 - 3", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
 
 void d14()
@@ -626,7 +664,6 @@ void d14()
     float selisihPemakaian,
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 6420, 9350, 9650);
-
 
     rekapitulasi(nama, "Rumah Tangga", "D1 - 4", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
@@ -638,7 +675,6 @@ void d21()
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 2340, 2620, 6000);
 
-
     rekapitulasi(nama, "Rumah Tangga", "D2 - 1", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
 
@@ -648,7 +684,6 @@ void d22()
     float selisihPemakaian,
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 2620, 2900, 6060);
-
 
     rekapitulasi(nama, "Rumah Tangga", "D2 - 2", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
@@ -660,7 +695,6 @@ void d23()
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 6490, 9500, 9800);
 
-
     rekapitulasi(nama, "Rumah Tangga", "D2 - 3", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
 
@@ -670,7 +704,6 @@ void d24()
     float selisihPemakaian,
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 6570, 9650, 9950);
-
 
     rekapitulasi(nama, "Rumah Tangga", "D2 - 4", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
@@ -682,7 +715,6 @@ void d31()
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 2900, 3180, 6120);
 
-
     rekapitulasi(nama, "Rumah Tangga", "D3 - 1", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
 
@@ -692,7 +724,6 @@ void d32()
     float selisihPemakaian,
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 3180, 3460, 6180);
-
 
     rekapitulasi(nama, "Rumah Tangga", "D3 - 2", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
@@ -704,7 +735,6 @@ void d33()
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 6640, 9800, 10100);
 
-
     rekapitulasi(nama, "Rumah Tangga", "D3 - 3", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
 
@@ -714,7 +744,6 @@ void d34()
     float selisihPemakaian,
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 6720, 9950, 10250);
-
 
     rekapitulasi(nama, "Rumah Tangga", "D3 - 4", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
@@ -726,7 +755,6 @@ void d41()
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 3460, 3740, 6240);
 
-
     rekapitulasi(nama, "Rumah Tangga", "D4 - 1", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
 
@@ -736,7 +764,6 @@ void d42()
     float selisihPemakaian,
         biayaPemakaian;
     registrasi(nama, &selisihPemakaian, &biayaPemakaian, 3740, 4020, 6300);
-
 
     rekapitulasi(nama, "Rumah Tangga", "D4 - 2", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
@@ -801,78 +828,78 @@ void d54()
     rekapitulasi(nama, "Rumah Tangga", "D5 - 4", selisihPemakaian, biayaPemakaian, BPM_RT, ADM_RT);
 }
 
-void e1() 
+void e1()
 {
     menuListrik();
     int kode = cekInput();
     switch (kode)
     {
-        case 1:
-            e11();
-            break;
-        case 2:
-            e12();
-            break;
-        case 3:
-            e13();
-            break;
-        case 4:
-            e14();
-            break;
-        default:
-            pesanError();
-            e1();
-            break;
+    case 1:
+        e11();
+        break;
+    case 2:
+        e12();
+        break;
+    case 3:
+        e13();
+        break;
+    case 4:
+        e14();
+        break;
+    default:
+        pesanError();
+        e1();
+        break;
     }
 }
 
-void e2() 
+void e2()
 {
     menuListrik();
     int kode = cekInput();
     switch (kode)
     {
-        case 1:
-            e21();
-            break;
-        case 2:
-            e22();
-            break;
-        case 3:
-            e23();
-            break;
-        case 4:
-            e24();
-            break;
-        default:
-            pesanError();
-            e2();
-            break;
+    case 1:
+        e21();
+        break;
+    case 2:
+        e22();
+        break;
+    case 3:
+        e23();
+        break;
+    case 4:
+        e24();
+        break;
+    default:
+        pesanError();
+        e2();
+        break;
     }
 }
 
-void e3() 
+void e3()
 {
     menuListrik();
     int kode = cekInput();
     switch (kode)
     {
-        case 1:
-            e31();
-            break;
-        case 2:
-            e32();
-            break;
-        case 3:
-            e33();
-            break;
-        case 4:
-            e34();
-            break;
-        default:
-            pesanError();
-            e3();
-            break;
+    case 1:
+        e31();
+        break;
+    case 2:
+        e32();
+        break;
+    case 3:
+        e33();
+        break;
+    case 4:
+        e34();
+        break;
+    default:
+        pesanError();
+        e3();
+        break;
     }
 }
 
@@ -996,10 +1023,9 @@ void e34()
     rekapitulasi(nama, "Usaha", "E3 - 4", selisihPemakaian, biayaPemakaian, BPM_U, ADM_U);
 }
 
-
-
 int main()
 {
     intro();
+
     return 0;
 }
